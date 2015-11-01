@@ -11,22 +11,26 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 /*
- * Description : abstract factory of order book
- * function    : create instance of order book
+ * Description : abstract factory of order
+ * function    : create instance of order
  */
 
-public abstract class AbstractOrderBookFactory {
+public abstract class AbstractOrderFactory {
 	
 	public final static String BID = "BID";
 	public final static String ASK = "ASK";
 	
+	public final static String MARKET = "MARKET";
+	public final static String LIMIT = "LIMIT";
+	
 	public static long AutoIncrementId = 1000;
 	
-	public static String getOrderBookId(String uid) {
+	public static String getOrderId(String accountId, String direction) {
 		// rule : time + uid + autoincrementid
+		String direct = String.valueOf(direction.charAt(0));
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 		String time = format.format(new Date());
-		String orderBookId = time + uid + Long.toString(AutoIncrementId);
+		String orderBookId = direct + time + accountId + Long.toString(AutoIncrementId);
 		AutoIncrementId++;
 		return orderBookId;
 	}
@@ -43,5 +47,10 @@ public abstract class AbstractOrderBookFactory {
 		}
 		return tradeDirection;
 	}
+	
+	
+	public abstract Order newLimitOrder(String uid, String securityId, String securityName, int quantity, double price, String direction);
+	
+	public abstract Order newMarketOrder(String uid, String securityId, String securityName, int quantity, String direction);
 	
 }
